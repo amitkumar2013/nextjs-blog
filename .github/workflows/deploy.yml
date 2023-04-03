@@ -1,6 +1,7 @@
-name: CD
+name: Manual Deployment
 
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch: {}
 
 jobs:
   build:
@@ -9,7 +10,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
+        with:
+          fetch-depth: '0'
+          
       - name: Setup Node.js      
         uses: actions/setup-node@v3
         with:
@@ -17,6 +20,17 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
-      
-      - name: Build
+        shell: bash
+
+      - name: Build (skip test for now)
         run: npm run build
+        shell: bash
+        
+      - name: Copy folder using rsync over ssh to where nginx expects it to be
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${ { secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${ { secrets.HOST_DNS }}
+          REMOTE_USER: ${ { secrets.USERNAME }}
+          SOURCE: ${ { secrets.SOURCE_DIR }}        
+          TARGET: ${ { secrets.TARGET_DIR }}        
