@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 16
+cache:
+  directories:
+  - node_modules
+script:
+  - npm run build
+env:
+  global:
+  - CONTENTFUL_SPACE_ID=7xy37xue51py
+  - CONTENTFUL_ACCESS_TOKEN=yf9YSuHNiw2AP641inKUhcJ-s93Pz6aWvI-lMHzuqS4
+  - CONTENTFUL_PREVIEW_ACCESS_TOKEN=DI4qUGRuAGjAeYlggy-52emWrt2QV8sTIawDj2PWuLo
+  - CONTENTFUL_PREVIEW_SECRET=preview
+  - CONTENTFUL_REVALIDATE_SECRET=validate
